@@ -44,6 +44,7 @@ class StorageServerHandler(StreamRequestHandler):
             LOG.debug('serializing task %s onto queue %d' % (task, offset))
 
             self.server.queues[offset].put(task)
+            self.wfile.write('ok\n')
 
 
 class StorageServer(ThreadingMixIn, TCPServer):

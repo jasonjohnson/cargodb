@@ -16,8 +16,8 @@ OPERATIONS = {
 }
 
 
-def unknown(*args):
-    LOG.debug('unknown operation called with %s' % args)
+def unknown(*args, **kwargs):
+    LOG.debug('unknown operation called with %s %s' % (args, kwargs))
 
 
 def worker(tasks):

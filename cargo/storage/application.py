@@ -16,6 +16,7 @@ THREADS = []
 
 def main():
     LOG.debug('starting storage task threads')
+
     for _ in range(WORKERS):
         queue = Queue()
 
@@ -27,6 +28,7 @@ def main():
         THREADS.append(thread)
  
     LOG.debug('starting storage server')
+
     server = StorageServer(('127.0.0.1', 8081), StorageServerHandler)
     server.queues = QUEUES
 
