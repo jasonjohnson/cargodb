@@ -21,12 +21,13 @@ class Router(object):
         method = self.method()
         args = self.args()
 
-        # If the request normally has a body, the controller
-        # is going to expect it as an argument.
         if self.request.body:
             args.append(self.request.body)
 
-        status, body = getattr(controller(), method)(*args)
+        status, body = getattr(controller, method)(*args)
+
+        if not body:
+            body = ''
 
         self.response.set_status(status)
         self.response.set_body(body)

@@ -1,27 +1,19 @@
-from cargo.model import Document
-from cargo.store import FlatFile
-from cargo.wsgi.util import ok, error, not_found
+import logging
+from cargo.wsgi.util import ok
 
 
-driver = FlatFile()
+LOG = logging.getLogger(__name__)
 
 
 class DocumentController(object):
     def GET(self, db, doc):
-        document = Document(db, doc)
+        LOG.debug('with database %s fetching document %s' % (db, doc))
+        return ok()
 
-        if not driver.exists(document):
-            return not_found()
-
-        return ok(driver.load(document))
-
-    def PUT(self, db, doc, content):
-        document = Document(db, doc, content)
-
-        if not driver.exists(document):
-            return ok(driver.save(document))
-
-        return error({'status': 'Error'})
+    def PUT(self, db, doc, content=None):
+        LOG.debug('with database %s adding document %s' % (db, doc))
+        return ok()
 
     def DELETE(self, db, doc):
-        pass
+        LOG.debug('with database %s deleting document %s' % (db, doc))
+        return ok()

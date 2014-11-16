@@ -1,34 +1,19 @@
-from cargo.model import Database
-from cargo.store import FlatFile
-from cargo.wsgi.util import ok, error, not_found
+import logging
+from cargo.wsgi.util import ok
 
 
-driver = FlatFile()
+LOG = logging.getLogger(__name__)
 
 
 class DatabaseController(object):
     def GET(self, db):
-        database = Database(db)
-
-        if not driver.exists(database):
-            return not_found()
-
-        return ok({'status': 'OK'})
+        LOG.debug('fetching database %s', db)
+        return ok()
 
     def PUT(self, db):
-        database = Database(db)
-
-        if not driver.exists(database):
-            if driver.save(database):
-                return ok({'status': 'Created'})
-
-        return error({'status': 'Error'})
+        LOG.debug('adding database %s' % db)
+        return ok()
 
     def DELETE(self, db):
-        database = Database(db)
-
-        if driver.exists(database):
-            if driver.delete(database):
-                return ok({'status': 'Deleted'})
-
-        return error({'status': 'Error'})
+        LOG.debug('deleting database %s' % db)
+        return ok()

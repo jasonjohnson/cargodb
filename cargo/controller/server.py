@@ -1,6 +1,11 @@
+import logging
 from cargo.wsgi.util import ok
+
+
+LOG = logging.getLogger(__name__)
 
 
 class ServerController(object):
     def GET(self):
-        return ok({'status': 'OK', 'version': 0.1})
+        LOG.debug('fetching server status')
+        return ok()
