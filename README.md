@@ -15,23 +15,25 @@ Notes
 Storage Server Commands
 -----------------------
 Possible commands to produce tasks:
-* db-fetch <database-id>\n
-* db-init <database-id>\n
-* db-delete <database-id>\n
-* doc-fetch <database-id> <document-id>\n
-* doc-init <database-id> <document-id>\n
-* doc-save <database-id> <document-id> <content>\n
-* doc-delete <database-id> <document-id>\n
+* db-fetch {database-id}\n
+* db-init {database-id}\n
+* db-delete {database-id}\n
+* doc-fetch {database-id} {document-id}\n
+* doc-init {database-id} {document-id}\n
+* doc-save {database-id} {document-id} {content}\n
+* doc-delete {database-id} {document-id}\n
 
 Possible responses:
-* [<document-id>,<document-id>,...]
-* <content>\n
+* [{document-id},{document-id},...]
+* {content}\n
 * ok\n
 * error\n
 
-database-id: a-zA-Z0-9_-
-document-id: a-zA-Z0-9_-
-content: newline-terminated
+**database-id:** a-zA-Z0-9_-
+
+**document-id:** a-zA-Z0-9_-
+
+**content:** newline-terminated
 
 TODO
 ----
