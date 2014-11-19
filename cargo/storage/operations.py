@@ -12,7 +12,11 @@ DATABASES = {}
 
 def db_fetch(db):
     LOG.debug('fetching database %s' % db)
-    print(DATABASES[db].keys())
+
+    if db in DATABASES:
+        return DATABASES[db].keys()
+
+    return False
 
 
 def db_init(db):
@@ -21,6 +25,8 @@ def db_init(db):
     if db not in DATABASES:
         LOG.debug('opening database %s' % db)
         DATABASES[db] = shelve.open('%s/%s' % (PATH, db), writeback=True)
+
+    return True
 
 
 def db_delete(db):
@@ -31,21 +37,16 @@ def db_delete(db):
         DATABASES.pop(db, None)
 
         os.remove('%s/%s' % (PATH, db))
-    else:
-        LOG.debug('tried to delete unknown database %s' % db)
+        return True
+
+    LOG.debug('tried to delete unknown database %s' % db)
+    return False
 
 
 def doc_fetch(db, doc):
     LOG.debug('with database %s fetching document %s' % (db, doc))
     db_init(db)
-    print(DATABASES[db].get(doc, None))
-
-
-def doc_init(db, doc):
-    LOG.debug('with database %s initializing document %s' % (db, doc))
-    db_init(db)
-    DATABASES[db][doc] = None
-    DATABASES[db].sync()
+    return DATABASES[db].get(doc, False)
 
 
 def doc_save(db, doc, content):
@@ -53,10 +54,16 @@ def doc_save(db, doc, content):
     db_init(db)
     DATABASES[db][doc] = content
     DATABASES[db].sync()
+    return True
 
 
 def doc_delete(db, doc):
     LOG.debug('with database %s deleting document %s' % (db, doc))
     db_init(db)
-    DATABASES[db].pop(doc, None)
+    doc = DATABASES[db].pop(doc, None)
+
+    if not doc:
+        return False
+
     DATABASES[db].sync()
+    return True

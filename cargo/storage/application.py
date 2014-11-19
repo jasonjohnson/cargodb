@@ -1,8 +1,10 @@
 import logging
 from Queue import Queue
+from SimpleXMLRPCServer import SimpleXMLRPCServer
 from threading import Thread
-from cargo.storage.server import StorageServer, StorageServerHandler
 from cargo.storage.worker import worker
+from cargo.storage.operations import (db_fetch, db_init, db_delete, doc_fetch,
+                                      doc_save, doc_delete)
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -27,10 +29,16 @@ def main():
         QUEUES.append(queue)        
         THREADS.append(thread)
  
-    LOG.debug('starting storage server')
+    LOG.debug('starting storage xmlrpc server')
 
-    server = StorageServer(('127.0.0.1', 8081), StorageServerHandler)
-    server.queues = QUEUES
+    server = SimpleXMLRPCServer(('127.0.0.1', 8081))
+    server.register_function(db_fetch)
+    server.register_function(db_init)
+    server.register_function(db_delete)
+    server.register_function(doc_fetch)
+    server.register_function(doc_save)
+    server.register_function(doc_delete)
+    server.register_introspection_functions()
 
     try:
         server.serve_forever()
